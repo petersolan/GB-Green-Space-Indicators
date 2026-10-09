@@ -1,0 +1,12 @@
+# Azure Storage emulator, so the lake runs on Blob Storage without an account:
+#   docker compose up -d azurite   then   LAKE_BACKEND=azurite
+services:
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+    command: azurite-blob --blobHost 0.0.0.0 --blobPort 10000 --skipApiVersionCheck --loose
+    ports:
+      - "127.0.0.1:10000:10000"   # localhost only
+    volumes:
+      - azurite:/data
+volumes:
+  azurite:

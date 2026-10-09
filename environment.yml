@@ -1,0 +1,41 @@
+# conda env create -f environment.yml
+name: greenidx
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  # vector and tabular
+  - geopandas>=1.0
+  - pyarrow>=16
+  - shapely>=2.0
+  - pyproj
+  - pandas
+  - python-duckdb>=1.1     # SQL engine with the spatial extension
+  # raster and cloud imagery
+  - xarray
+  - rioxarray
+  - dask
+  - odc-stac
+  - pystac-client
+  - planetary-computer
+  # Azure Blob Storage
+  - adlfs
+  - azure-storage-blob
+  - fsspec
+  # metadata and statistics standards
+  - pygeometa              # ISO 19115-3 XML from one metadata record
+  - rdflib                 # DCAT-AP as RDF / JSON-LD
+  - pyshacl                # validate DCAT-AP against its SHACL shapes
+  - pandera                # data quality checks
+  - httpx
+  - pyyaml
+  - matplotlib
+  # development
+  - pytest
+  - ruff
+  - pip
+  - pip:
+      # Delta tables (gold layer); from PyPI because the conda-forge archive
+      # fails to unpack with some conda versions
+      - deltalake>=0.20
+      - sdmx1>=2.20            # SDMX structures and data

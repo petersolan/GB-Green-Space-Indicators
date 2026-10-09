@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+           xmlns:dc="http://purl.org/dc/elements/1.1/"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:title>Green space access and summer greenness, Devon, 2024</dc:title>
+  <dc:creator>Peter S (portfolio project)</dc:creator>
+  <dc:subject>green space; urban greenness; NDVI; accessibility; environmental indicators; Sentinel-2; Devon</dc:subject>
+  <dc:description>Indicators for the ten local authorities of Devon and their 2021 Lower layer Super Output Areas (LSOAs). GSA_300M is the share of residents who live within 300 m (straight line) of a public green space of at least 0.5 ha, the WHO Europe benchmark, from census population modelled per address and OS Open Zoomstack green space. NDVI_MEAN and NDVI_VEG_PCT describe summer 2024 greenness from cloud-masked Sentinel-2 imagery: the mean normalised difference vegetation index and the share of the area with NDVI above 0.5. NDVI_CLEAR_PCT gives the share of each area with a cloud-free observation, as a quality measure for the two NDVI indicators.</dc:description>
+  <dc:publisher>Peter S (portfolio project)</dc:publisher>
+  <dc:date>2026-10-09</dc:date>
+  <dc:type>Dataset</dc:type>
+  <dc:format>text/csv</dc:format>
+  <dc:identifier>greenidx-devon-green-space-2024</dc:identifier>
+  <dc:source>https://github.com/petersolan/GB-Green-Space-Indicators</dc:source>
+  <dc:language>en</dc:language>
+  <dc:coverage>Devon, United Kingdom; 2024-01-01/2024-12-31; WGS84 bbox [-4.6806, 50.202, -2.8867, 51.2464]</dc:coverage>
+  <dc:rights>https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/</dc:rights>
+</oai_dc:dc>

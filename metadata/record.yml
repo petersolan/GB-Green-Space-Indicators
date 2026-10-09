@@ -1,0 +1,127 @@
+# The one metadata record for the indicator dataset, in pygeometa's Metadata
+# Control File (MCF) format. ISO 19115 (ISO 19139 XML), DCAT-AP (JSON-LD) and
+# Dublin Core are all generated from it by greenidx.publish, so they can't
+# drift apart. Values in {braces} are filled in at publish time.
+mcf:
+  version: 1.0
+
+metadata:
+  identifier: greenidx-devon-green-space-2024
+  language: en
+  charset: utf8
+  hierarchylevel: dataset
+  datestamp: "{datestamp}"
+  dates:
+    creation: "{datestamp}"
+  dataseturi: https://github.com/petersolan/GB-Green-Space-Indicators
+
+spatial:
+  datatype: vector
+  geomtype: polygon
+
+identification:
+  language: en
+  charset: utf8
+  title:
+    en: Green space access and summer greenness, Devon, 2024
+  abstract:
+    en: >-
+      Indicators for the ten local authorities of Devon and their 2021 Lower
+      layer Super Output Areas (LSOAs). GSA_300M is the share of residents who
+      live within 300 m (straight line) of a public green space of at least
+      0.5 ha, the WHO Europe benchmark, from census population modelled per
+      address and OS Open Zoomstack green space. NDVI_MEAN and NDVI_VEG_PCT
+      describe summer 2024 greenness from cloud-masked Sentinel-2 imagery: the
+      mean normalised difference vegetation index and the share of the area
+      with NDVI above 0.5. NDVI_CLEAR_PCT gives the share of each area with a
+      cloud-free observation, as a quality measure for the two NDVI indicators.
+  dates:
+    creation: 2026-10-09
+    publication: "{datestamp}"
+  topiccategory:
+    - environment
+    - society
+  keywords:
+    default:
+      keywords:
+        en: [green space, urban greenness, NDVI, accessibility, environmental indicators, Sentinel-2, Devon]
+    gemet:
+      keywords:
+        en: [green space, vegetation, environmental indicator]
+      keywords_type: theme
+      vocabulary:
+        name:
+          en: GEMET - Concepts
+        url: https://www.eionet.europa.eu/gemet/
+  extents:
+    spatial:
+      - bbox: "{bbox_wgs84}"
+        crs: 4326
+        description: Devon (ten local authority districts)
+    temporal:
+      - begin: 2024-01-01
+        end: 2024-12-31
+        resolution: P1Y
+  fees: None
+  accessconstraints: otherRestrictions
+  rights:
+    en: >-
+      Code MIT. Indicators derived from Office for National Statistics,
+      Ordnance Survey and Copernicus Sentinel-2 data under the Open Government
+      Licence v3.0 and the Copernicus licence; see the dataset's lineage.
+  license:
+    name: OGL-UK-3.0
+    url: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+  status: completed
+  maintenancefrequency: annually
+
+contact:
+  pointOfContact: &contact
+    organization: Peter S (portfolio project)
+    url: https://github.com/petersolan
+    email: petersolan@users.noreply.github.com
+    role: pointOfContact
+  distributor: *contact
+  publisher: *contact
+
+distribution:
+  sdmx_csv:
+    url: "{base_url}/indicators.sdmx.csv"
+    type: text/csv
+    name:
+      en: Indicators as SDMX-CSV 2.0
+    description:
+      en: One observation per area, indicator and year, with its SDMX structure (indicators.dsd.xml)
+    function: download
+  csv:
+    url: "{base_url}/indicators.csv"
+    type: text/csv
+    name:
+      en: Indicators as a flat CSV
+    description:
+      en: The same observations with area names, for spreadsheets
+    function: download
+  geoparquet:
+    url: "{base_url}/indicators_lsoa.parquet"
+    type: application/vnd.apache.parquet
+    name:
+      en: Indicators by LSOA with boundaries (GeoParquet)
+    description:
+      en: LSOA polygons with both indicators, British National Grid
+    function: download
+
+dataquality:
+  scope:
+    level: dataset
+  lineage:
+    statement: >-
+      Population per address (UPRN) from the GB-Census-Population-Map project
+      (Census 2021 postcode totals shared over ONS UPRN Directory addresses
+      inside buildings). Public green space: OS Open Zoomstack parcels of
+      public types (parks, playing fields, play spaces, allotments, other
+      sports facilities), touching parcels merged into sites and sites under
+      0.5 ha dropped. Distances are straight-line, from address points to site
+      boundaries. Greenness: Sentinel-2 L2A from Microsoft Planetary Computer,
+      the clearest eight days of June to August 2024, cloud-masked with the
+      scene classification layer, median NDVI at 20 m. Boundaries: ONS LAD May
+      2025 and LSOA December 2021, generalised (BGC).

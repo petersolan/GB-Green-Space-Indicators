@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      # Azure Storage emulator: the lake tests run against Blob Storage too
+      azurite:
+        image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+        ports:
+          - 10000:10000
+    defaults:
+      run:
+        shell: bash -el {0}   # login shell, so the micromamba environment is active
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+      - name: Install the package
+        run: pip install --no-deps -e .
+      - name: Lint
+        run: ruff check src tests && ruff format --check src tests
+      - name: Tests (synthetic data, local lake and Azurite)
+        run: pytest -q

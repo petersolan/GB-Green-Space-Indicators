@@ -1,0 +1,413 @@
+[
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#catalog",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Catalog"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "Indicators published by the GB-Green-Space-Indicators project."
+      }
+    ],
+    "http://purl.org/dc/terms/publisher": [
+      {
+        "@id": "https://github.com/petersolan"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Green space indicators catalogue"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#dataset": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#dataset"
+      }
+    ]
+  },
+  {
+    "@id": "https://www.iana.org/assignments/media-types/text/csv",
+    "@type": [
+      "http://purl.org/dc/terms/MediaType"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#dataset",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Dataset"
+    ],
+    "http://purl.org/dc/terms/accrualPeriodicity": [
+      {
+        "@id": "http://publications.europa.eu/resource/authority/frequency/ANNUAL"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "Indicators for the ten local authorities of Devon and their 2021 Lower layer Super Output Areas (LSOAs). GSA_300M is the share of residents who live within 300 m (straight line) of a public green space of at least 0.5 ha, the WHO Europe benchmark, from census population modelled per address and OS Open Zoomstack green space. NDVI_MEAN and NDVI_VEG_PCT describe summer 2024 greenness from cloud-masked Sentinel-2 imagery: the mean normalised difference vegetation index and the share of the area with NDVI above 0.5. NDVI_CLEAR_PCT gives the share of each area with a cloud-free observation, as a quality measure for the two NDVI indicators."
+      }
+    ],
+    "http://purl.org/dc/terms/identifier": [
+      {
+        "@value": "greenidx-devon-green-space-2024"
+      }
+    ],
+    "http://purl.org/dc/terms/issued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2026-10-09"
+      }
+    ],
+    "http://purl.org/dc/terms/language": [
+      {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      }
+    ],
+    "http://purl.org/dc/terms/provenance": [
+      {
+        "@id": "_:N3049fd6fc84142afa19cc613b63110ed"
+      }
+    ],
+    "http://purl.org/dc/terms/publisher": [
+      {
+        "@id": "https://github.com/petersolan"
+      }
+    ],
+    "http://purl.org/dc/terms/spatial": [
+      {
+        "@id": "_:Ncc05fc52fb8d4049ab8c3d85d3114958"
+      }
+    ],
+    "http://purl.org/dc/terms/temporal": [
+      {
+        "@id": "_:N4628283e6c4940faba60069363b7a7de"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Green space access and summer greenness, Devon, 2024"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#contactPoint": [
+      {
+        "@id": "_:N1b3d9f185cec4f04ab029cfbc2015430"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#distribution": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-sdmx_csv"
+      },
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-csv"
+      },
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-geoparquet"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#keyword": [
+      {
+        "@language": "en",
+        "@value": "green space"
+      },
+      {
+        "@language": "en",
+        "@value": "urban greenness"
+      },
+      {
+        "@language": "en",
+        "@value": "NDVI"
+      },
+      {
+        "@language": "en",
+        "@value": "accessibility"
+      },
+      {
+        "@language": "en",
+        "@value": "environmental indicators"
+      },
+      {
+        "@language": "en",
+        "@value": "Sentinel-2"
+      },
+      {
+        "@language": "en",
+        "@value": "Devon"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#landingPage": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#theme": [
+      {
+        "@id": "http://publications.europa.eu/resource/authority/data-theme/ENVI"
+      }
+    ]
+  },
+  {
+    "@id": "_:N1b3d9f185cec4f04ab029cfbc2015430",
+    "@type": [
+      "http://www.w3.org/2006/vcard/ns#Kind",
+      "http://www.w3.org/2006/vcard/ns#Organization"
+    ],
+    "http://www.w3.org/2006/vcard/ns#fn": [
+      {
+        "@value": "Peter S (portfolio project)"
+      }
+    ],
+    "http://www.w3.org/2006/vcard/ns#hasEmail": [
+      {
+        "@id": "mailto:petersolan@users.noreply.github.com"
+      }
+    ]
+  },
+  {
+    "@id": "_:Ncc05fc52fb8d4049ab8c3d85d3114958",
+    "@type": [
+      "http://purl.org/dc/terms/Location"
+    ],
+    "http://www.w3.org/ns/dcat#bbox": [
+      {
+        "@type": "http://www.opengis.net/ont/geosparql#wktLiteral",
+        "@value": "POLYGON((-4.6806 50.202,-2.8867 50.202,-2.8867 51.2464,-4.6806 51.2464,-4.6806 50.202))"
+      }
+    ]
+  },
+  {
+    "@id": "_:N4628283e6c4940faba60069363b7a7de",
+    "@type": [
+      "http://purl.org/dc/terms/PeriodOfTime"
+    ],
+    "http://www.w3.org/ns/dcat#endDate": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-12-31"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#startDate": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-01-01"
+      }
+    ]
+  },
+  {
+    "@id": "_:N3049fd6fc84142afa19cc613b63110ed",
+    "@type": [
+      "http://purl.org/dc/terms/ProvenanceStatement"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Population per address (UPRN) from the GB-Census-Population-Map project (Census 2021 postcode totals shared over ONS UPRN Directory addresses inside buildings). Public green space: OS Open Zoomstack parcels of public types (parks, playing fields, play spaces, allotments, other sports facilities), touching parcels merged into sites and sites under 0.5 ha dropped. Distances are straight-line, from address points to site boundaries. Greenness: Sentinel-2 L2A from Microsoft Planetary Computer, the clearest eight days of June to August 2024, cloud-masked with the scene classification layer, median NDVI at 20 m. Boundaries: ONS LAD May 2025 and LSOA December 2021, generalised (BGC)."
+      }
+    ]
+  },
+  {
+    "@id": "http://publications.europa.eu/resource/authority/data-theme/ENVI",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en",
+        "@value": "Environment"
+      }
+    ]
+  },
+  {
+    "@id": "https://sdmx.org/?page_id=5008",
+    "@type": [
+      "http://purl.org/dc/terms/Standard"
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "SDMX-CSV 2.0"
+      }
+    ]
+  },
+  {
+    "@id": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "@type": [
+      "http://purl.org/dc/terms/LicenseDocument"
+    ]
+  },
+  {
+    "@id": "http://publications.europa.eu/resource/authority/language/ENG",
+    "@type": [
+      "http://purl.org/dc/terms/LinguisticSystem"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.csv",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Resource"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.sdmx.csv",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Resource"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-csv",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Distribution"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "The same observations with area names, for spreadsheets"
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Indicators as a flat CSV"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#accessURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.csv"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#downloadURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.csv"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#mediaType": [
+      {
+        "@id": "https://www.iana.org/assignments/media-types/text/csv"
+      }
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan",
+    "@type": [
+      "http://xmlns.com/foaf/0.1/Agent"
+    ],
+    "http://xmlns.com/foaf/0.1/name": [
+      {
+        "@language": "en",
+        "@value": "Peter S (portfolio project)"
+      }
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators",
+    "@type": [
+      "http://xmlns.com/foaf/0.1/Document"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-geoparquet",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Distribution"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "LSOA polygons with both indicators, British National Grid"
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Indicators by LSOA with boundaries (GeoParquet)"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#accessURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators_lsoa.parquet"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#downloadURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators_lsoa.parquet"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#mediaType": [
+      {
+        "@id": "https://www.iana.org/assignments/media-types/application/vnd.apache.parquet"
+      }
+    ]
+  },
+  {
+    "@id": "https://www.iana.org/assignments/media-types/application/vnd.apache.parquet",
+    "@type": [
+      "http://purl.org/dc/terms/MediaType"
+    ]
+  },
+  {
+    "@id": "http://publications.europa.eu/resource/authority/frequency/ANNUAL",
+    "@type": [
+      "http://purl.org/dc/terms/Frequency"
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators#distribution-sdmx_csv",
+    "@type": [
+      "http://www.w3.org/ns/dcat#Distribution"
+    ],
+    "http://purl.org/dc/terms/conformsTo": [
+      {
+        "@id": "https://sdmx.org/?page_id=5008"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "One observation per area, indicator and year, with its SDMX structure (indicators.dsd.xml)"
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Indicators as SDMX-CSV 2.0"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#accessURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.sdmx.csv"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#downloadURL": [
+      {
+        "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators.sdmx.csv"
+      }
+    ],
+    "http://www.w3.org/ns/dcat#mediaType": [
+      {
+        "@id": "https://www.iana.org/assignments/media-types/text/csv"
+      }
+    ]
+  },
+  {
+    "@id": "https://github.com/petersolan/GB-Green-Space-Indicators/raw/main/publication/indicators_lsoa.parquet",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Resource"
+    ]
+  }
+]
