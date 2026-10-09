@@ -8,17 +8,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      # Azure Storage emulator: the lake tests run against Blob Storage too
-      azurite:
-        image: mcr.microsoft.com/azure-storage/azurite:3.35.0
-        ports:
-          - 10000:10000
     defaults:
       run:
         shell: bash -el {0}   # login shell, so the micromamba environment is active
     steps:
       - uses: actions/checkout@v4
+      # Azure Storage emulator, so the lake tests run against Blob Storage too. Started
+      # as a step, not a service container, because it needs --skipApiVersionCheck:
+      # the Azure SDK can be newer than the emulator (same flags as docker-compose.yml)
+      - name: Start Azurite
+        run: >
+          docker run -d -p 127.0.0.1:10000:10000 mcr.microsoft.com/azure-storage/azurite:3.35.0
+          azurite-blob --blobHost 0.0.0.0 --blobPort 10000 --skipApiVersionCheck --loose
       - uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: environment.yml
