@@ -2,7 +2,7 @@
 
 Two environmental indicators for the ten local authorities of Devon and their 729
 neighbourhoods (LSOAs), produced the way a statistics office would: from open data, in a cloud
-data lake, published as **SDMX** statistics with **ISO 19115**, **DCAT-AP** and **Dublin Core**
+data lake (run on Azure Data Lake Storage Gen2), published as **SDMX** statistics with **ISO 19115**, **DCAT-AP** and **Dublin Core**
 metadata.
 
 - **Green space access (GSA_300M):** share of residents within 300 m of a public green space of
@@ -133,6 +133,13 @@ The same code runs on all three; CI runs the tests against both a local lake and
 `.env`. Then `python -m greenidx all` builds the lake in Azure. `.\scripts\azure_setup.ps1
 -Teardown` deletes it all again. For production, the account key would give way to Microsoft
 Entra ID sign-in and Key Vault (see the [feasibility note](docs/feasibility.md)).
+
+This has been run on a real Azure subscription: an ADLS Gen2 account in UK South held the whole
+lake (23 files, 220 MB across bronze, silver and gold), the full pipeline took about 1.5
+minutes from a laptop, and the indicators matched the local run exactly. Storage at that size
+costs well under a penny a month. On a new subscription the script first registers the
+`Microsoft.Storage` resource provider, which Azure otherwise reports as a misleading
+"SubscriptionNotFound".
 
 Inputs not fetched from the internet are read from the companion projects: the census outputs
 (`CENSUS_DIR`) and OS Open Zoomstack (`ZOOMSTACK_GPKG`).

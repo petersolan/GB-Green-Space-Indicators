@@ -56,6 +56,14 @@ if ($Teardown) {
     return
 }
 
+# A new subscription has the storage service switched off, and then reports a
+# misleading "SubscriptionNotFound": register it first (free, once per subscription)
+$state = az provider show --namespace Microsoft.Storage --query registrationState -o tsv 2>$null
+if ($state -ne "Registered") {
+    Write-Host "Registering the Microsoft.Storage resource provider (once per subscription)..."
+    Invoke-Az @("provider", "register", "--namespace", "Microsoft.Storage", "--wait") | Out-Null
+}
+
 Write-Host "Resource group $ResourceGroup ($Location)"
 Invoke-Az @("group", "create", "--name", $ResourceGroup, "--location", $Location, "--output", "none") | Out-Null
 
