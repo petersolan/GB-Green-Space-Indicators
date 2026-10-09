@@ -13,16 +13,30 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 import time
+from pathlib import Path
 
 STAGES = ["bronze", "silver", "access", "ndvi", "publish"]
+
+
+def load_env(path: Path) -> None:
+    """Read KEY=value lines from .env into the environment (existing values win)."""
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"'))
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="greenidx", description=__doc__.splitlines()[0])
     parser.add_argument("stages", nargs="+", choices=[*STAGES, "all", "ls"])
     args = parser.parse_args(argv)
+    load_env(Path.cwd() / ".env")
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s", datefmt="%H:%M:%S"
     )

@@ -116,7 +116,8 @@ python qgis/export_view.py      # outputs/view.gpkg for QGIS
 # project: indicators, green space, every address) and qgis/render_image.py
 ```
 
-The lake backend comes from the environment (copy `.env.example` to `.env`):
+The lake backend comes from the environment or a `.env` file (copy `.env.example`; values
+already set in the environment take precedence):
 
 | `LAKE_BACKEND` | Where the lake lives |
 |---|---|
@@ -125,6 +126,13 @@ The lake backend comes from the environment (copy `.env.example` to `.env`):
 | `azure` | A real storage account: set `AZURE_STORAGE_CONNECTION_STRING` (or account name and key) |
 
 The same code runs on all three; CI runs the tests against both a local lake and Azurite.
+
+**On Azure:** with the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and
+`az login`, `.\scripts\azure_setup.ps1` creates a resource group, an ADLS Gen2 storage account
+(HTTPS only, TLS 1.2, no public access) and the `lake` container, and writes the connection to
+`.env`. Then `python -m greenidx all` builds the lake in Azure. `.\scripts\azure_setup.ps1
+-Teardown` deletes it all again. For production, the account key would give way to Microsoft
+Entra ID sign-in and Key Vault (see the [feasibility note](docs/feasibility.md)).
 
 Inputs not fetched from the internet are read from the companion projects: the census outputs
 (`CENSUS_DIR`) and OS Open Zoomstack (`ZOOMSTACK_GPKG`).
@@ -145,6 +153,7 @@ publication/          the published outputs
 docs/                 findings, feasibility note, map
 qgis/                 export for viewing, QGIS project builder, image renderer
 tests/                synthetic-data tests
+scripts/azure_setup.ps1  create (or delete) the Azure storage and point .env at it
 ```
 
 ## Data and licences

@@ -115,3 +115,30 @@ def test_lake_azurite(monkeypatch):
     lake.write_delta(pd.DataFrame({"x": [1]}), "gold", "azure_check")
     assert lake.read_delta("gold", "azure_check")["x"].tolist() == [1]
     assert lake.root() == "az://test-lake"
+
+
+def test_env_file_fills_gaps_but_never_overrides(tmp_path, monkeypatch):
+    from greenidx.__main__ import load_env
+
+    (tmp_path / ".env").write_text('# comment\nLAKE_CONTAINER="from-file"\nLAKE_BACKEND=azure\n')
+    monkeypatch.delenv("LAKE_CONTAINER", raising=False)
+    monkeypatch.setenv("LAKE_BACKEND", "local")  # already set: must win
+    load_env(tmp_path / ".env")
+    import os
+
+    assert os.environ["LAKE_CONTAINER"] == "from-file"
+    assert os.environ["LAKE_BACKEND"] == "local"
+    monkeypatch.delenv("LAKE_CONTAINER")
+
+
+def test_delta_options_from_connection_string(monkeypatch):
+    monkeypatch.setenv("LAKE_BACKEND", "azure")
+    monkeypatch.setenv(
+        "AZURE_STORAGE_CONNECTION_STRING",
+        "DefaultEndpointsProtocol=https;AccountName=greenidx1;AccountKey=abc==;EndpointSuffix=core.windows.net",
+    )
+    lake.backend.cache_clear()
+    assert lake.delta_options() == {
+        "azure_storage_account_name": "greenidx1",
+        "azure_storage_account_key": "abc==",
+    }

@@ -99,7 +99,12 @@ def delta_options() -> dict[str, str] | None:
             "azure_storage_use_emulator": "true",
         }
     if "connection_string" in opts:
-        return {"azure_storage_connection_string": opts["connection_string"]}
+        # delta-rs doesn't take a connection string: pass its account name and key
+        parts = dict(p.split("=", 1) for p in opts["connection_string"].split(";") if "=" in p)
+        return {
+            "azure_storage_account_name": parts["AccountName"],
+            "azure_storage_account_key": parts["AccountKey"],
+        }
     return {
         "azure_storage_account_name": opts["account_name"],
         "azure_storage_account_key": opts["account_key"],
