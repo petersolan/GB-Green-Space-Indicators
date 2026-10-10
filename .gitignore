@@ -1,5 +1,5 @@
 # Data and the lake stay local (or in Azure), never in git
-data/
+/data/
 lake/
 outputs/
 

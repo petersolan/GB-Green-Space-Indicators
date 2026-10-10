@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Devon Green Space</title>
+<meta name="description" content="Share of residents within 300 m of public green space, and summer greenness from Sentinel-2, for every LSOA in Devon.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-screen map with one floating panel (title, indicator switch, legend, credits). */
+:root{--bg:#f3f6f6;--surface:#fff;--ink:#0f1f26;--ink2:#41545c;--muted:#6f8189;--line:#dbe3e5;--accent:#0b6e64;
+ --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1417;--surface:#141d21;--ink:#e8f0f1;--ink2:#b3c3c7;
+ --muted:#7f9298;--line:#25333a;--accent:#4fc1b3;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans)}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:12px;left:12px;width:min(350px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;
+ background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 16px 12px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+h1{font-size:19px;line-height:1.25;margin:0 0 6px}
+.lede{margin:0 0 4px;color:var(--ink2);font-size:14px}
+.eyebrow{font:500 11.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.seg{display:flex;flex-direction:column;gap:4px}
+.seg button{text-align:left;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink2);font:500 13.5px var(--sans);padding:7px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.def{font-size:13px;color:var(--ink2);margin:8px 0 0}
+.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:4px}
+.legend i{height:10px;border-radius:2px} .legend span{font:500 11.5px/1 var(--mono);color:var(--muted);padding-top:3px}
+.key{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);margin-top:8px}
+.key i{width:14px;height:14px;border-radius:3px;background:#1f6b3a;border:1px solid #0d3b1f;flex:none}
+.credits{font-size:11.5px;color:var(--muted);margin:12px 0 0;line-height:1.45}
+a{color:var(--accent)}
+.toggle{display:none}
+@media (max-width:600px){.panel{top:auto;bottom:12px;max-height:48%}
+ .panel.collapsed>:not(h1):not(.toggle){display:none}
+ .toggle{display:block;position:absolute;top:12px;right:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:6px;font:500 12px var(--sans);padding:4px 8px}}
+.maplibregl-popup-content{font:13px/1.45 var(--sans);color:#0f1f26}
+.maplibregl-popup-content b{font-family:var(--mono)} .maplibregl-popup-content h3{margin:0 0 4px;font-size:14px}
+</style>
+</head>
+<body>
+<div id="map" role="region" aria-label="Map of green space indicators for Devon"></div>
+<aside class="panel" id="panel">
+  <button class="toggle" id="toggle" aria-expanded="true">Hide</button>
+  <h1>Green space in Devon</h1>
+  <p class="lede">Two indicators for Devon's 729 neighbourhoods (LSOAs). 59% of 1.2 million residents live within
+    300&nbsp;m of public green space: the cities lead, yet the greenest places have the fewest parks.
+    Click an area for its values.</p>
+  <div class="eyebrow">Indicator</div>
+  <div class="seg" role="group" aria-label="Indicator" id="seg"></div>
+  <p class="def" id="def"></p>
+  <div class="legend" id="legend"></div>
+  <div class="key"><i></i>Public green space of at least 0.5&nbsp;ha (1,374 sites)</div>
+  <p class="credits">Method, metadata (ISO 19115, DCAT-AP, SDMX) and limitations:
+    <a href="https://github.com/petersolan/GB-Green-Space-Indicators">repository</a>.<br>
+    Contains OS data © Crown copyright and database right 2026. Source: Office for National Statistics, licensed under the
+    <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>.
+    Contains modified Copernicus Sentinel data 2024.</p>
+</aside>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js"></script>
+<script>
+const BLUES = ["#eef3f8", "#bdd2e6", "#74a9cf", "#2b7bba", "#08457e"];
+const GREENS = ["#fbfbd4", "#d2ec9c", "#86c77a", "#3a9a50", "#0b5d33"];
+const INDICATORS = {
+  GSA_300M: {label: "Green space within 300 m", colours: BLUES, breaks: [20, 40, 60, 80], fmt: v => `${v.toFixed(0)}%`,
+    ticks: ["0%", "20", "40", "60", "80–100%"],
+    def: "Share of residents living within 300 m (straight line) of a public green space of at least 0.5 ha, the WHO Europe benchmark."},
+  NDVI_MEAN: {label: "Summer greenness (NDVI)", colours: GREENS, breaks: [0.4, 0.5, 0.6, 0.7], fmt: v => v.toFixed(2),
+    ticks: ["<0.4", "0.4", "0.5", "0.6", "0.7+"],
+    def: "Mean Sentinel-2 NDVI over the clearest days of June to August 2024, cloud-masked. Higher is greener."},
+  NDVI_VEG_PCT: {label: "Vegetated share of the area", colours: GREENS, breaks: [20, 40, 60, 80], fmt: v => `${v.toFixed(0)}%`,
+    ticks: ["0%", "20", "40", "60", "80–100%"],
+    def: "Share of the area's clear Sentinel-2 pixels with NDVI above 0.5 (vegetation), summer 2024."},
+};
+let current = "GSA_300M";
+
+function colourExpr(key) {
+  const {colours, breaks} = INDICATORS[key];
+  const expr = ["step", ["get", key], colours[0]];
+  breaks.forEach((b, i) => expr.push(b, colours[i + 1]));
+  return expr;
+}
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://tiles.openfreemap.org/styles/positron",
+  bounds: [[-4.68, 50.2], [-2.89, 51.25]], fitBoundsOptions: {padding: innerWidth > 600 ? {top: 20, bottom: 20, left: 380, right: 20} : 10},
+});
+map.addControl(new maplibregl.NavigationControl({showCompass: false}), "top-right");
+map.addControl(new maplibregl.ScaleControl(), "bottom-right");
+
+map.on("load", () => {
+  const before = map.getStyle().layers.find(l => l.type === "symbol")?.id;  // keep place labels on top
+  map.addSource("lsoa", {type: "geojson", data: "data/lsoa.geojson", promoteId: "area_code",
+    attribution: "Indicators: ONS, OS, Copernicus Sentinel-2 (see panel)"});
+  map.addSource("districts", {type: "geojson", data: "data/districts.geojson"});
+  map.addSource("sites", {type: "geojson", data: "data/green_sites.geojson"});
+  map.addLayer({id: "lsoa-fill", type: "fill", source: "lsoa", paint: {"fill-color": colourExpr(current), "fill-opacity": 0.78}}, before);
+  map.addLayer({id: "lsoa-line", type: "line", source: "lsoa", paint: {"line-color": "#ffffff", "line-width": 0.4, "line-opacity": 0.7}}, before);
+  map.addLayer({id: "lsoa-hover", type: "line", source: "lsoa",
+    paint: {"line-color": "#0f1f26", "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2, 0]}}, before);
+  map.addLayer({id: "sites", type: "fill", source: "sites", minzoom: 9,
+    paint: {"fill-color": "#1f6b3a", "fill-outline-color": "#0d3b1f", "fill-opacity": 0.85}}, before);
+  map.addLayer({id: "districts", type: "line", source: "districts", paint: {"line-color": "#0f1f26", "line-width": 1.4}}, before);
+});
+
+let hovered = null;
+map.on("mousemove", "lsoa-fill", (e) => {
+  if (hovered) map.setFeatureState({source: "lsoa", id: hovered}, {hover: false});
+  hovered = e.features[0].id;
+  map.setFeatureState({source: "lsoa", id: hovered}, {hover: true});
+  map.getCanvas().style.cursor = "pointer";
+});
+map.on("mouseleave", "lsoa-fill", () => {
+  if (hovered) map.setFeatureState({source: "lsoa", id: hovered}, {hover: false});
+  hovered = null; map.getCanvas().style.cursor = "";
+});
+map.on("click", "lsoa-fill", (e) => {
+  const p = e.features[0].properties;
+  const rows = Object.entries(INDICATORS).map(([k, d]) => `${d.label}: <b>${d.fmt(p[k])}</b>`).join("<br>");
+  new maplibregl.Popup({maxWidth: "280px"}).setLngLat(e.lngLat).setHTML(
+    `<h3>${p.area_name}</h3>${rows}<br><span style="color:#6f8189">Clear Sentinel-2 coverage ${p.NDVI_CLEAR_PCT.toFixed(0)}%</span>`
+  ).addTo(map);
+});
+
+function select(key) {
+  current = key;
+  const d = INDICATORS[key];
+  if (map.getLayer("lsoa-fill")) map.setPaintProperty("lsoa-fill", "fill-color", colourExpr(key));
+  for (const b of document.querySelectorAll("#seg button")) b.setAttribute("aria-pressed", b.dataset.key === key);
+  document.getElementById("def").textContent = d.def;
+  document.getElementById("legend").innerHTML =
+    d.colours.map(c => `<i style="background:${c}"></i>`).join("") + d.ticks.map(t => `<span>${t}</span>`).join("");
+}
+document.getElementById("seg").innerHTML =
+  Object.entries(INDICATORS).map(([k, d]) => `<button data-key="${k}">${d.label}</button>`).join("");
+for (const b of document.querySelectorAll("#seg button")) b.onclick = () => select(b.dataset.key);
+select(current);
+
+const panel = document.getElementById("panel"), toggle = document.getElementById("toggle");
+toggle.onclick = () => {
+  const collapsed = panel.classList.toggle("collapsed");
+  toggle.textContent = collapsed ? "About" : "Hide";
+  toggle.setAttribute("aria-expanded", !collapsed);
+};
+</script>
+</body>
+</html>

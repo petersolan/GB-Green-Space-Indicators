@@ -5,6 +5,8 @@ neighbourhoods (LSOAs), produced the way a statistics office would: from open da
 data lake (run on Azure Data Lake Storage Gen2), published as **SDMX** statistics with **ISO 19115**, **DCAT-AP** and **Dublin Core**
 metadata.
 
+**[Live map](https://petersolan.github.io/GB-Green-Space-Indicators/)**: both indicators for all 729 LSOAs, with the green sites.
+
 - **Green space access (GSA_300M):** share of residents within 300 m of a public green space of
   at least 0.5 ha, the WHO Europe benchmark. Population comes from census totals modelled per
   address (companion project [GB-Census-Population-Map](https://github.com/petersolan/GB-Census-Population-Map)).
@@ -112,6 +114,7 @@ python -m greenidx ls           # list the lake
 pytest                          # synthetic-data tests (+ Azurite if running)
 python docs/make_map.py         # redraw the map
 python qgis/export_view.py      # outputs/view.gpkg for QGIS
+python scripts/export_site.py   # site/data/*.geojson for the live map (GitHub Pages)
 # then, with QGIS's Python: qgis/build_project.py -> outputs/green_space.qgz (styled
 # project: indicators, green space, every address) and qgis/render_image.py
 ```
@@ -161,6 +164,8 @@ docs/                 findings, feasibility note, map
 qgis/                 export for viewing, QGIS project builder, image renderer
 tests/                synthetic-data tests
 scripts/azure_setup.ps1  create (or delete) the Azure storage and point .env at it
+scripts/export_site.py   GeoJSON for the live map
+site/                    the live map (MapLibre), deployed to GitHub Pages
 ```
 
 ## Data and licences
